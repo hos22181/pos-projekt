@@ -1,0 +1,17 @@
+@startuml
+
+class User
+
+class Listing
+class PropertyListing
+class VehicleListing
+class ProductListing
+
+class Category
+
+class UserManager
+class SearchManager
+class ListingManager
+class DatabaseManager
+
+@enduml
