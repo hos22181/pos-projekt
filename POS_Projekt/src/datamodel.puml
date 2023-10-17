@@ -2,10 +2,15 @@
 
 class User
 
-class Listing
+abstract class Listing
 class PropertyListing
 class VehicleListing
 class ProductListing
+
+Listing <|--PropertyListing
+Listing <|--ProductListing
+Listing <|--VehicleListing
+
 
 class Category
 
