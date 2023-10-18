@@ -2,9 +2,14 @@
 
 class User{
   - userId: int
-  - username: string
-  - password: string
+  + username: string
+  - hashedPassword: string
   + email: string
+  + fullName: string
+  + registrationDate: Date
+  + profileImage: byte[]
+  - phoneNumber: string
+  - address: string
 }
 
 abstract class Listing{
@@ -12,11 +17,24 @@ abstract class Listing{
   + title: string
   + description: string
   + price: double
+  + creationDate: Date
+  + owner: User
+  - isActive: boolean
+  - location: string
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  COMMERCIAL
 }
 
 class PropertyListing{
-+ area: double
-+ rooms: int
+  + propertyType: string
+  + area: double
+  + rooms: int
+  + address: string
+  + buildYear: int
 }
 
 class VehicleListing{
@@ -24,23 +42,58 @@ class VehicleListing{
   + model: string
   + year: int
   + mileage: int
-  + horsepower: int
+  + condition: string
+  + fuelType: string
 }
 
 class ProductListing{
-
+  + productName: string
+  + condition: string
+  + manufacturer: string
 }
 
-Listing <|--PropertyListing
-Listing <|--ProductListing
-Listing <|--VehicleListing
+Listing <|-- PropertyListing
+Listing <|-- ProductListing
+Listing <|-- VehicleListing
 
+class Category{
+  - categoryId: int
+  + name: string
+  + parentCategory: Category
+  + subCategories: Category[]
+}
 
-class Category
+class UserManager{
+  + registerUser(user: User): boolean
+  + loginUser(username: string, password: string): boolean
+  + updateUserProfile(user: User): boolean
+}
 
-class UserManager
-class SearchManager
-class ListingManager
-class DatabaseManager
+class SearchManager{
+  + searchListingsByCategory(category: Category): Listing[]
+  + searchListingsByKeyword(keyword: string): Listing[]
+}
+
+enum Condition {
+  NEW
+  USED
+}
+
+class ListingManager{
+  + createListing(listing: Listing): boolean
+  + editListing(listing: Listing): boolean
+  + deactivateListing(listing: Listing): boolean
+}
+
+class DatabaseManager{
+  + saveUser(user: User): boolean
+  + saveListing(listing: Listing): boolean
+  + loadUser(userId: int): User
+  + loadListing(listingId: int): Listing
+}
+
+User "1" -- "0..*" Listing: Owns
+Category "0..*" -- "0..1" Category: Parent
+Category "0..1" -- "0..*" Category: Subcategories
 
 @enduml
