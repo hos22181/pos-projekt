@@ -1,11 +1,35 @@
 @startuml
 
-class User
+class User{
+  - userId: int
+  - username: string
+  - password: string
+  + email: string
+}
 
-abstract class Listing
-class PropertyListing
-class VehicleListing
-class ProductListing
+abstract class Listing{
+  - listingId: int
+  + title: string
+  + description: string
+  + price: double
+}
+
+class PropertyListing{
++ area: double
++ rooms: int
+}
+
+class VehicleListing{
+  + manufacturer: string
+  + model: string
+  + year: int
+  + mileage: int
+  + horsepower: int
+}
+
+class ProductListing{
+
+}
 
 Listing <|--PropertyListing
 Listing <|--ProductListing
