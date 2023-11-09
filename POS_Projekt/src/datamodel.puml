@@ -1,6 +1,6 @@
 @startuml
 
-class User{
+class User {
   - userId: int
   + username: string
   - hashedPassword: string
@@ -12,7 +12,7 @@ class User{
   - address: string
 }
 
-abstract class Listing{
+abstract class Listing {
   - listingId: int
   + title: string
   + description: string
@@ -29,7 +29,12 @@ enum PropertyType {
   COMMERCIAL
 }
 
-class PropertyListing{
+enum Condition {
+  NEW
+  USED
+}
+
+class PropertyListing {
   + propertyType: string
   + area: double
   + rooms: int
@@ -37,7 +42,7 @@ class PropertyListing{
   + buildYear: int
 }
 
-class VehicleListing{
+class VehicleListing {
   + manufacturer: string
   + model: string
   + year: int
@@ -46,53 +51,54 @@ class VehicleListing{
   + fuelType: string
 }
 
-class ProductListing{
+class ProductListing {
   + productName: string
   + condition: string
   + manufacturer: string
 }
 
-Listing <|-- PropertyListing
-Listing <|-- ProductListing
-Listing <|-- VehicleListing
-
-class Category{
-  - categoryId: int
-  + name: string
-  + parentCategory: Category
-  + subCategories: Category[]
-}
-
-class UserManager{
-  + registerUser(user: User): boolean
-  + loginUser(username: string, password: string): boolean
-  + updateUserProfile(user: User): boolean
-}
-
-class SearchManager{
-  + searchListingsByCategory(category: Category): Listing[]
-  + searchListingsByKeyword(keyword: string): Listing[]
-}
-
-enum Condition {
-  NEW
-  USED
-}
-
-class ListingManager{
-  + createListing(listing: Listing): boolean
-  + editListing(listing: Listing): boolean
-  + deactivateListing(listing: Listing): boolean
-}
-
-class DatabaseManager{
+class DatabaseManager {
   + saveUser(user: User): boolean
   + saveListing(listing: Listing): boolean
   + loadUser(userId: int): User
   + loadListing(listingId: int): Listing
 }
 
+class UserManager {
+  + registerUser(user: User): boolean
+  + loginUser(username: string, password: string): boolean
+  + updateUserProfile(user: User): boolean
+}
+
+class SearchManager {
+  + searchListingsByCategory(category: Category): Listing[]
+  + searchListingsByKeyword(keyword: string): Listing[]
+}
+
+class ListingManager {
+  + createListing(listing: Listing): boolean
+  + editListing(listing: Listing): boolean
+  + deactivateListing(listing: Listing): boolean
+}
+
+class Category {
+  - categoryId: int
+  + name: string
+  + parentCategory: Category
+  + subCategories: Category[]
+}
+
 User "1" -- "0..*" Listing: Owns
+UserManager "1" -- "0..1" User: Manages
+ListingManager "1" -- "0..1" Listing: Manages
+SearchManager "1" -- "0..1" Listing: Searches
+DatabaseManager "1" -- "0..1" User: Manages
+DatabaseManager "1" -- "0..1" Listing: Manages
+
+Listing <|-- PropertyListing
+Listing <|-- ProductListing
+Listing <|-- VehicleListing
+
 Category "0..*" -- "0..1" Category: Parent
 Category "0..1" -- "0..*" Category: Subcategories
 
